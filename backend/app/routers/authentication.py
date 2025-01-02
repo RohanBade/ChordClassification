@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Depends, Form, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
@@ -41,7 +40,7 @@ def login(
 
 
 @router.post("/refresh-token", response_model=Token)
-def refresh_access_token(refresh_token: str):
+def refresh_access_token(refresh_token: str = Form(...)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

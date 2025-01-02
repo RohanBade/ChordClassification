@@ -1,0 +1,82 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 16px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+body {
+  background-color: #fff;
+  margin: 0 auto;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  line-height: 1;
+  cursor: pointer;
+}
+
+input:-webkit-autofill {
+  background-color: white !important;
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  box-shadow: 0 0 0 1000px white inset !important;
+}
+
+.show-password {
+  width: 90%;
+  display: inline-block;
+  text-align: left;
+  padding: 4px;
+}
+
+.show-password label {
+  font-size: 14px;
+  color: #6c757d;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.entity {
+  margin-bottom: 8px;
+}
+
+.entity input {
+  width: 90%;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+.entity input:focus {
+  border-color: #0073b1;
+  outline: none;
+}
+
+.btn {
+  width: 90%;
+  background-color: #0073b1;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  padding: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 10px;
+}
+
+.btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.btn:hover:not(:disabled) {
+  background-color: #5ac0c6;
+}

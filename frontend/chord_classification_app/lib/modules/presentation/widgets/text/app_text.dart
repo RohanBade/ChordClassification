@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/extensions/double_extensions.dart';
 import '../../../../core/extensions/string_extensions.dart';
 import '../../../../core/services/get.dart';
 
@@ -31,7 +31,7 @@ class AppText extends StatelessWidget {
     return AutoSizeText(
       text.emoji,
       style: (style ?? Get.bodyMedium).copyWith(
-          color: textColor, fontSize: fontSize?.sp, fontWeight: fontWeight),
+          color: textColor, fontSize: fontSize?.st, fontWeight: fontWeight),
       textAlign: textAlign,
       maxLines: maxLines,
       overflow: overflow,

@@ -13,7 +13,7 @@ class ErrorButton extends ConsumerWidget {
     return Center(
       child: Column(children: [
         10.verticalSpace,
-        const AppText("Unexpected Error Occur"),
+        const AppText("Error Occur"),
         5.verticalSpace,
         AppButton(
             onTap: () {

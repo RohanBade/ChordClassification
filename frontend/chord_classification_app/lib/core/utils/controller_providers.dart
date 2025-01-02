@@ -6,3 +6,15 @@ final pageControllerProvider = Provider.autoDispose((ref) {
   ref.onDispose(() => controller.dispose);
   return controller;
 });
+
+final textController = Provider.autoDispose.family((ref, _) {
+  final controller = TextEditingController();
+  ref.onDispose(() => controller.dispose);
+  return controller;
+});
+
+final noDiposeTextControllers = Provider.family((ref, _) {
+  final controller = TextEditingController();
+  ref.onDispose(() => controller.dispose);
+  return controller;
+});

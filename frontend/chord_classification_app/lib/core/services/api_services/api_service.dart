@@ -1,23 +1,24 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../modules/injection_container.dart';
+import '../../extensions/extensions.dart';
 import '../interceptors/cache_interceptors.dart';
+import '../interceptors/token_interceptors.dart';
 
 typedef QueryType = Map<String, dynamic>?;
 
 class ApiManager {
-  final _connectTimeout = const Duration(seconds: 10);
-  final _receiveTimeout = const Duration(seconds: 10);
-  final _sendTimeout = const Duration(seconds: 10);
+  final _connectTimeout = 10.seconds;
+  final _receiveTimeout = 10.seconds;
+  final _sendTimeout = 10.seconds;
 
-  /// Dio instance used for API requests.
   late Dio dio;
 
   ApiManager(Ref ref) {
     Map<String, dynamic> headers = {};
     BaseOptions options = BaseOptions(
-        baseUrl: dotenv.get('BASEURL'),
+        baseUrl: ref.read(baseUrlProvider),
         connectTimeout: _connectTimeout,
         receiveTimeout: _receiveTimeout,
         sendTimeout: _sendTimeout,
@@ -27,6 +28,7 @@ class ApiManager {
 
     dio = Dio(options);
 
+    dio.interceptors.add(ref.read(tokenResolverProvider));
     dio.interceptors.add(ref.read(cacheResolverProvider));
   }
 
@@ -36,9 +38,25 @@ class ApiManager {
         queryParameters: queryParameters, options: options);
   }
 
-  Future<Response> post(String path,
-      {Options? options, Map<String, dynamic>? data}) async {
+  Future<Response> post(String path, {Options? options, data}) async {
     return await dio.post(path, data: data, options: options);
   }
-  //TODO Add File Upload/Delete/Patch/Put
+
+  Future<Response> patch(String path, {data, Options? options}) {
+    return dio.patch(path, data: data, options: options);
+  }
+
+  Future<Response> delete(String path,
+      {data, Map<String, dynamic>? queryParameters, Options? options}) {
+    return dio.delete(path,
+        data: data, queryParameters: queryParameters, options: options);
+  }
+
+  Future<Response> fileUpload(String path, {FormData? data}) async {
+    return await post(
+      path,
+      options: Options(headers: {'enctype': 'multipart/form-data'}),
+      data: data,
+    );
+  }
 }

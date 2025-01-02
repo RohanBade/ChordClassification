@@ -27,6 +27,6 @@ class AppTextButton extends StatelessWidget {
         material: (context, platform) => MaterialTextButtonData(
             clipBehavior: Clip.hardEdge,
             style: const ButtonStyle(splashFactory: NoSplash.splashFactory)),
-        child: AppText(text, style: style ?? Get.bodyMedium.white));
+        child: AppText(text, style: style ?? Get.bodyMedium.primary.px15o5));
   }
 }

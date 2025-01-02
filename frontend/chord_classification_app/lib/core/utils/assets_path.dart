@@ -4,19 +4,12 @@ class _AssetsImagesGen {
   const _AssetsImagesGen();
   static const _imagePath = "${Assets._basePath}/images";
 
-  String get splashImage => "$_imagePath/bhagavad_gita_background.png";
-  String get onboardingBg => "$_imagePath/onboarding_bg.svg";
-  String get quotesBackground => "$_imagePath/bhagwatgita_cover.jpg";
-  String onbordingImage(index) => "$_imagePath/onboarding_image$index.png";
-  String get chapterFlower => "$_imagePath/chapter_flower.png";
-  String get krishnaBackground => "$_imagePath/krishna_background.png";
+  String get splashImage => "$_imagePath/splash.gif";
+  String get loadingImage => "$_imagePath/loading.gif";
 }
 
 class _AssetsSvgIconGen {
   const _AssetsSvgIconGen();
-  static const _iconPath = "${Assets._basePath}/icons";
-
-  String get settings => "$_iconPath/settings.svg";
 }
 
 class Assets {

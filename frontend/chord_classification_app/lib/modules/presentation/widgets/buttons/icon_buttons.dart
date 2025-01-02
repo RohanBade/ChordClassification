@@ -5,8 +5,8 @@ import '../../../../core/services/get.dart';
 
 //Support both IconData and SVG
 
-class AppIconButton extends StatelessWidget {
-  const AppIconButton(this.icon,
+class AppIcon extends StatelessWidget {
+  const AppIcon(this.icon,
       {super.key,
       this.color,
       this.size = 25,

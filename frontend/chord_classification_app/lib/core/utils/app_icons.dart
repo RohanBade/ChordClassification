@@ -1,14 +1,20 @@
-import 'package:flutter/material.dart';
-
-import 'assets_path.dart';
-
 //Centralization of icons
 
-abstract class AppIcons {
-  static get settings => Assets.icons.settings;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-  static const rightCheveron = Icons.chevron_right;
-  static const menu = Icons.menu;
-  static const bookmark = Icons.bookmark;
-  static const bookmarkOutlined = Icons.bookmark_outline;
+import '../services/get.dart';
+
+abstract class AppIcons {
+  static const account = Icons.account_circle_outlined;
+  static const email = Icons.email_outlined;
+
+  static const play = Icons.play_arrow_rounded;
+  static const pause = Icons.pause_circle;
+
+  static const reload = Icons.replay;
+
+  static const home = CupertinoIcons.home;
+  static get setting => PlatformIcons(Get.context).settings;
 }

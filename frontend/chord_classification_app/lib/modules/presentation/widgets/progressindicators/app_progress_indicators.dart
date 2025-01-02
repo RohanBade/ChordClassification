@@ -10,16 +10,14 @@ class AppProgressIndicator extends StatelessWidget {
   final Color? color;
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: PlatformCircularProgressIndicator(
-        material: (context, platform) => MaterialProgressIndicatorData(
-            key: key, color: color ?? Get.primaryColor, strokeWidth: 2.sp),
-        cupertino: (context, platform) => CupertinoProgressIndicatorData(
-            radius: 10.sp,
-            key: key,
-            color: color ?? Get.primaryColor,
-            animating: true),
-      ),
+    return PlatformCircularProgressIndicator(
+      material: (context, platform) => MaterialProgressIndicatorData(
+          key: key, color: color ?? Get.primaryColor, strokeWidth: 2.sp),
+      cupertino: (context, platform) => CupertinoProgressIndicatorData(
+          radius: 10.sp,
+          key: key,
+          color: color ?? Get.primaryColor,
+          animating: true),
     );
   }
 }

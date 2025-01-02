@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/extensions/color_extensions.dart';
-import '../../../../core/extensions/textstyle_extensions.dart';
+import '../../../../core/configs/app_colors.dart';
+import '../../../../core/extensions/extensions.dart';
 import '../../../../core/services/get.dart';
 import '../buttons/icon_buttons.dart';
 
@@ -30,7 +29,7 @@ class Apptextformfield extends StatelessWidget {
       this.node,
       this.height,
       this.isDense = false,
-      this.radius = 13,
+      this.radius = 8,
       this.onSelected,
       this.onSubmitted});
 
@@ -64,7 +63,7 @@ class Apptextformfield extends StatelessWidget {
     final obscure = ValueNotifier<bool>(true);
     final border = OutlineInputBorder(
         borderSide: BorderSide.none,
-        borderRadius: BorderRadius.circular(radius).r);
+        borderRadius: BorderRadius.circular(radius).rt);
     return ValueListenableBuilder(
       valueListenable: obscure,
       builder: (context, hide, child) {
@@ -88,7 +87,7 @@ class Apptextformfield extends StatelessWidget {
             obscureText: obs,
             spellCheckConfiguration: SpellCheckConfiguration(
                 spellCheckService: DefaultSpellCheckService(),
-                misspelledSelectionColor: Colors.red),
+                misspelledSelectionColor: AppColors.red),
             inputFormatters: inputFormatters,
             autocorrect: true,
             expands: maxline == null,
@@ -99,40 +98,40 @@ class Apptextformfield extends StatelessWidget {
             maxLines: maxline,
             decoration: InputDecoration(
                 isDense: isDense,
-                contentPadding: contentPadding ?? const EdgeInsets.all(15).r,
+                floatingLabelBehavior: FloatingLabelBehavior.auto,
+                contentPadding: contentPadding ?? 15.allPad,
                 fillColor: fillColor,
+                errorStyle: Get.bodySmall.error.px10,
                 filled: true,
+                labelStyle: Get.bodyMedium.px14,
                 suffixIconColor: Get.disabledColor.o6,
                 prefixIconColor: Get.disabledColor.o6,
                 enabledBorder: border,
                 errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Get.primaryColor, width: 1),
-                    borderRadius: BorderRadius.circular(radius).r),
-                focusedErrorBorder: border,
+                    borderSide:
+                        const BorderSide(color: AppColors.red, width: 1),
+                    borderRadius: BorderRadius.circular(radius).rt),
+                focusedErrorBorder: border.copyWith(
+                    borderSide: const BorderSide(color: AppColors.red)),
                 focusedBorder: border,
                 prefixIcon: icon != null
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5).r,
-                        child: icon)
+                    ? Padding(padding: 5.horizontalPad, child: icon)
                     : tohide
-                        ? const AppIconButton(Icons.lock)
+                        ? const AppIcon(Icons.lock)
                         : null,
                 hintText: hinttext,
                 alignLabelWithHint: true,
-                hintStyle: Get.bodyMedium.px13.disabledO5,
-                suffixIconConstraints: BoxConstraints(minHeight: 8.h),
+                hintStyle: Get.bodyMedium.px14.disabledO5,
+                suffixIconConstraints: BoxConstraints(minHeight: 8.ht),
                 floatingLabelAlignment: FloatingLabelAlignment.start,
                 suffixIcon: tohide
-                    ? AppIconButton(
+                    ? AppIcon(
                         onTap: () => obscure.value = !hide,
-                        padding: const EdgeInsets.only(right: 8).r,
+                        padding: 8.rightPad,
                         hide ? Icons.visibility_off : Icons.visibility_rounded)
                     : suggestions != null
-                        ? AppIconButton(
-                            Icons.arrow_drop_down,
-                            color: Get.primaryColor,
-                            padding: const EdgeInsets.only(right: 5).r,
-                          )
+                        ? AppIcon(Icons.arrow_drop_down,
+                            color: Get.primaryColor, padding: 8.rightPad)
                         : suffixIcon));
       },
     );

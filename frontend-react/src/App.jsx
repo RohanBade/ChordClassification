@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
+import FileUpload from "./components/FileUpload/FileUpload";
+import { FileProvider } from "./contexts/FileContext";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,20 +15,33 @@ const App = () => {
     }
   }, []);
 
+  const handleFileSelect = (file) => {
+    console.log("Selected file:", file);
+    // You can handle the file (upload, preview, etc.)
+  };
+
   return (
-    <Router>
-      <Navbar
-        isAuthenticated={isAuthenticated}
-        setIsAuthenticated={setIsAuthenticated}
-      />
-      <Routes>
-        <Route
-          path="/login"
-          element={<Login setIsAuthenticated={setIsAuthenticated} />}
+    <FileProvider>
+      <Router>
+        <Navbar
+          isAuthenticated={isAuthenticated}
+          setIsAuthenticated={setIsAuthenticated}
         />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </Router>
+        {isAuthenticated && (
+          <FileUpload
+            onFileSelect={handleFileSelect}
+            buttonLabel="Upload Audio File"
+          />
+        )}
+        <Routes>
+          <Route
+            path="/login"
+            element={<Login setIsAuthenticated={setIsAuthenticated} />}
+          />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </Router>
+    </FileProvider>
   );
 };
 

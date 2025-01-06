@@ -152,3 +152,9 @@
   color: blue;
   text-decoration: underline;
 }
+
+@media screen and (max-width: 768px) {
+  .register-container {
+    width: 95%;
+  }
+}

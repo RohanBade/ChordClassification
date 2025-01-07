@@ -5,6 +5,7 @@ import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import FileUpload from "./components/FileUpload/FileUpload";
 import { FileProvider } from "./contexts/FileContext";
+import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,7 +18,6 @@ const App = () => {
 
   const handleFileSelect = (file) => {
     console.log("Selected file:", file);
-    // You can handle the file (upload, preview, etc.)
   };
 
   return (

@@ -6,7 +6,7 @@ import '../../extensions/extensions.dart';
 import '../interceptors/cache_interceptors.dart';
 import '../interceptors/token_interceptors.dart';
 
-typedef QueryType = Map<String, dynamic>?;
+typedef QueryType = Map<String, dynamic>;
 
 class ApiManager {
   final _connectTimeout = 10.seconds;
@@ -16,7 +16,7 @@ class ApiManager {
   late Dio dio;
 
   ApiManager(Ref ref) {
-    Map<String, dynamic> headers = {};
+    QueryType headers = {};
     BaseOptions options = BaseOptions(
         baseUrl: ref.read(baseUrlProvider),
         connectTimeout: _connectTimeout,
@@ -33,7 +33,7 @@ class ApiManager {
   }
 
   Future<Response> get(String path,
-      {Options? options, Map<String, dynamic>? queryParameters}) async {
+      {Options? options, QueryType? queryParameters}) async {
     return await dio.get(path,
         queryParameters: queryParameters, options: options);
   }
@@ -47,7 +47,7 @@ class ApiManager {
   }
 
   Future<Response> delete(String path,
-      {data, Map<String, dynamic>? queryParameters, Options? options}) {
+      {data, QueryType? queryParameters, Options? options}) {
     return dio.delete(path,
         data: data, queryParameters: queryParameters, options: options);
   }

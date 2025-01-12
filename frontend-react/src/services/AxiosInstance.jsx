@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const AxiosInstance = axios.create({
-  baseURL: "http://localhost:8000",
+  // please change the baseURL to http://localhost:8000 if locally running
+  baseURL: "https://chordclassification-backend.onrender.com",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

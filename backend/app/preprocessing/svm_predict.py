@@ -127,7 +127,7 @@ def consolidate_chords(predictions):
     consolidated.append(
         {
             "start": start_time,
-            "end": predictions[-1]["timestamp"],
+            "end": predictions[-1]["timestamp"] + 1,
             "chord": current_chord,
         }
     )

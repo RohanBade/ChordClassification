@@ -10,6 +10,17 @@ from backend.app.schemas.user import User as Schemas_User
 
 
 def create(request: Schemas_User, db: Session):
+    same_username = (
+        db.query(models_User).filter((models_User.name == request.name)).first()
+    )
+    same_email = (
+        db.query(models_User).filter((models_User.email == request.email)).first()
+    )
+
+    if same_email:
+        raise HTTPException(status_code=400, detail="Email is already taken.")
+    if same_username:
+        raise HTTPException(status_code=400, detail="Username is already taken.")
     hashed_password = Hash.bcrypt(request.password)
     new_user = models_User(
         name=request.name, email=request.email, password=hashed_password

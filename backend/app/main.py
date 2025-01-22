@@ -1,8 +1,9 @@
+import mimetypes
 import os
 import pickle
 
 import pandas as pd
-from fastapi import Depends, FastAPI, UploadFile
+from fastapi import Depends, FastAPI, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -38,6 +39,19 @@ async def create_upload_file(
     file: UploadFile, current_user: schemas = Depends(get_current_user)
 ):
     try:
+        if not file.filename.lower().endswith(".wav"):
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid file type. Only .wav files are allowed.",
+            )
+
+        mime_type, _ = mimetypes.guess_type(file.filename)
+        if mime_type != "audio/wav" and mime_type != "audio/x-wav":
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid file format. Please upload a valid WAV file.",
+            )
+
         pitch_classes = [
             "C",
             "C#",

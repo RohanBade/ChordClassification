@@ -31,7 +31,8 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
     <nav>
       <div className="nav-header">
         <Link to="/" className="nav-home">
-          Home
+          <img src="/assets/logo.png" style={{ width: "90px" }} alt="" />
+          Chordzify
         </Link>
         <div
           className={`hamburger ${menuOpen ? "open" : ""}`}
@@ -52,7 +53,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
         )}
         {isAuthenticated && (
           <button onClick={handleLogout} className="btn-logout">
-            Logout
+            Sign Out
           </button>
         )}
       </div>

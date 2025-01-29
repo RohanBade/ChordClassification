@@ -62,7 +62,7 @@ const Login = ({ setIsAuthenticated }) => {
   return (
     <div className="login-container">
       <div className="heading">
-        <h2>Sign In</h2>
+        <h2>Log in</h2>
         <p>Enter your credentials below to login</p>
       </div>
       <form onSubmit={handleLogin}>

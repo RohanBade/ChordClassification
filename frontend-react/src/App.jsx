@@ -5,6 +5,8 @@ import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import FileUpload from "./components/FileUpload/FileUpload";
 import { FileProvider } from "./contexts/FileContext";
+import Homepage from "./components/Homepage/Homepage";
+
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -26,13 +28,20 @@ const App = () => {
           isAuthenticated={isAuthenticated}
           setIsAuthenticated={setIsAuthenticated}
         />
-        {isAuthenticated && (
-          <FileUpload
-            onFileSelect={handleFileSelect}
-            buttonLabel="Upload Audio File"
-          />
-        )}
         <Routes>
+          <Route
+            path="/"
+            element={
+              isAuthenticated ? (
+                <FileUpload
+                  onFileSelect={handleFileSelect}
+                  buttonLabel="Browse File"
+                />
+              ) : (
+                <Homepage />
+              )
+            }
+          />
           <Route
             path="/login"
             element={<Login setIsAuthenticated={setIsAuthenticated} />}

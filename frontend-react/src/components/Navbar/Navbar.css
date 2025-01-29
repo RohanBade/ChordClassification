@@ -3,10 +3,17 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #0073b1;
+  background-color: rgb(17, 26, 42);
   padding: 10px 20px;
   color: #fff;
-  height: 60px;
+  height: 70px;
+}
+.nav-header {
+  margin: 0 40px;
+}
+.nav-home {
+  display: flex;
+  align-items: center;
 }
 
 nav a {
@@ -16,28 +23,25 @@ nav a {
 }
 
 nav a:hover {
-  color: black;
+  color: gray;
 }
 
 .nav-links {
   display: flex;
   gap: 10px;
+  margin: 0 40px;
 }
 
 .btn-logout {
-  background-color: #ff4d4d;
-  color: #fff;
-  height: 40px;
-  width: 100px;
-  font-size: 1.2rem;
+  color: white;
+  background: none;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 0;
   cursor: pointer;
+  font-size: 1.2rem;
 }
-
 .btn-logout:hover {
-  background-color: #ff1a1a;
+  color: gray;
 }
 
 /* Responsive styles */
@@ -46,18 +50,22 @@ nav a:hover {
     display: none;
     flex-direction: column;
     position: absolute;
-    top: 60px;
-    left: 0;
-    background-color: #333;
-    width: 100%;
-    padding: 10px 0;
+    top: 80px;
+    left: 0px;
+    background-color: rgb(23, 32, 47);
+    padding: 20px 0;
+  }
+  .nav-header {
+    margin: 0 0;
   }
 
   .nav-links.active {
     position: absolute;
     display: flex;
-    width: 95vw;
+    width: 80 vw;
     text-align: center;
+    margin: 0 0;
+    z-index: 50;
   }
 
   .hamburger {
@@ -66,7 +74,7 @@ nav a:hover {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    margin: 8px 8px;
+    margin: 0 0;
   }
 
   .hamburger span {
@@ -82,7 +90,6 @@ nav a:hover {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin: 8px 8px;
   }
 }
 

@@ -77,9 +77,17 @@ const Register = () => {
         setFormData({ username: "", email: "", password: "" });
         navigate("/login");
       }
-    } catch (err) {
-      console.error("Registration failed:", err);
-      setError("An unexpected error occurred. Please try again.");
+    } catch (error) {
+      if (error.response) {
+        console.error("Error response:", error.response.data.detail);
+        setError(error.response.data.detail);
+      } else if (error.request) {
+        console.error("No response from server:", error.request);
+        setError("No response. Please try again later.");
+      } else {
+        console.error("Error:", error.message);
+        setError("An error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -142,8 +150,11 @@ const Register = () => {
         </div>
       </form>
       <div className="login-link">
-        <p>
-          Already have an account? <Link to="/login">Login</Link>
+        <p style={{ color: "gray" }}>
+          Already have an account?{" "}
+          <Link style={{ color: "skyblue" }} to="/login">
+            Login
+          </Link>
         </p>
       </div>
     </div>

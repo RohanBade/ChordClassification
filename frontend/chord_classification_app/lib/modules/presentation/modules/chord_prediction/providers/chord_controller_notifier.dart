@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
@@ -7,18 +6,23 @@ import 'package:syncfusion_flutter_core/core.dart';
 
 import '../../../../../core/configs/app_colors.dart';
 import '../../../../../core/constants/chord_map.dart';
-import '../../../../../core/extensions/extensions.dart';
 import '../../../../domain/entities/chord_prediction/chord_prediction.dart';
+import '../view/amplitude_graph_view.dart';
 
 class ChordControllerNotifier extends ChangeNotifier {
   List<ChordPrediction> chordPredictions = [];
+  List<AmplitudeGraphData> amplitudesData = [];
   String chordValue = '';
   PlayerController playerController = PlayerController();
-  RangeController rangeController = RangeController(start: 0, end: 8);
+  RangeController rangeController = RangeController(start: 0, end: 6);
+  RangeController amplitudeController = RangeController(start: 0, end: 1.5);
   Color color = AppColors.primary;
   bool isPlaying = false;
   int currentIndex = 0;
-  Timer? timer;
+
+  double speed = 1.0;
+
+  int? stopTime;
 
   ChordControllerNotifier(File file) {
     playerController.preparePlayer(path: file.path);
@@ -28,6 +32,7 @@ class ChordControllerNotifier extends ChangeNotifier {
       isPlaying = false;
       currentIndex = 0;
     });
+    playerController.setRate(speed);
     playerController.onCurrentDurationChanged.listen((sec) {
       updateChord(sec);
     });
@@ -37,33 +42,61 @@ class ChordControllerNotifier extends ChangeNotifier {
   void dispose() {
     super.dispose();
     playerController.removeListener(() {});
-    rangeController.removeListener(() {});
     playerController.dispose();
     rangeController.dispose();
-    timer?.cancel();
+    amplitudeController.dispose();
   }
 
+  List<double> get amplitudes => playerController.waveformData;
+  double get duration => playerController.maxDuration / 1000;
+
+  double get timePerSample => duration / amplitudes.length;
+
+  ChordPrediction get currentChord => chordPredictions[currentIndex];
+
   updateChord(int currentDuration) {
-    int start = currentDuration ~/ 1000;
-    rangeController.start = start;
-    rangeController.end = start + 8;
-    for (int i = 0; i < chordPredictions.length; i++) {
-      final prediction = chordPredictions[i];
-      if (currentDuration >= prediction.start * 1000 &&
-          currentDuration < prediction.end * 1000) {
-        updateChordValue(
-            '${prediction.chord} (${prediction.start}-${prediction.end}) sec');
-        color = chordToColor[prediction.chord] ?? AppColors.titleColor;
-        currentIndex = i;
-        break;
-      }
+    final graphStart = currentDuration / 1000;
+    rangeController.start = graphStart;
+    rangeController.end = graphStart + 6;
+    amplitudeController.start = graphStart;
+    amplitudeController.end =
+        graphStart + (currentChord.end - currentChord.start);
+    if (stopTime != null && currentDuration >= stopTime! * 1000) {
+      updateIsPlaying();
+      stopTime = null;
     }
+    final playingIndex = chordPredictions.indexWhere((c) =>
+        currentDuration >= c.start * 1000 && currentDuration < c.end * 1000);
+    if (playingIndex == currentIndex) {
+      notifyListeners();
+      return;
+    }
+    currentIndex = playingIndex;
+    final prediction = chordPredictions[currentIndex];
+    updateChordValue(
+        '${prediction.chord} (${prediction.start}-${prediction.end}) sec');
+    color = chordToColor[prediction.chord] ?? AppColors.titleColor;
+    notifyListeners();
+  }
+
+  updateSpeed(double speed) {
+    this.speed = speed;
+    playerController.setRate(speed);
     notifyListeners();
   }
 
   updatePredictions(List<ChordPrediction> predictions) {
     chordPredictions = [...predictions];
+    updateAmplitudeData();
     color = chordToColor[predictions.first.chord] ?? AppColors.titleColor;
+    notifyListeners();
+  }
+
+  updateAmplitudeData() {
+    for (var i = 0; i < amplitudes.length; i++) {
+      amplitudesData.add(AmplitudeGraphData(
+          amplitude: amplitudes[i], duration: i * timePerSample));
+    }
     notifyListeners();
   }
 
@@ -78,10 +111,16 @@ class ChordControllerNotifier extends ChangeNotifier {
   }
 
   seekTo(int start) {
-    currentIndex = chordPredictions.indexWhere((c) => c.start == start);
     playerController.seekTo(start * 1000);
-    timer?.cancel();
     notifyListeners();
+  }
+
+  panGraph(String startGraph) {
+    double start = double.parse(startGraph);
+    if (isPlaying) {
+      return;
+    }
+    playerController.seekTo((start * 1000).toInt());
   }
 
   updateIsPlaying() {
@@ -92,17 +131,13 @@ class ChordControllerNotifier extends ChangeNotifier {
       playerController.startPlayer();
       isPlaying = true;
     }
-    timer?.cancel();
     notifyListeners();
   }
 
   playTheChord(int start) async {
+    currentIndex = chordPredictions.indexWhere((c) => c.start == start);
+    stopTime = chordPredictions[currentIndex].end;
     seekTo(start);
     updateIsPlaying();
-    final duration = chordPredictions[currentIndex].end -
-        chordPredictions[currentIndex].start;
-    timer = Timer.periodic((duration + 1).seconds, (_) {
-      updateIsPlaying();
-    });
   }
 }

@@ -9,8 +9,10 @@ import '../../../widgets/progressindicators/app_progress_indicators.dart';
 import '../../../widgets/text/app_text.dart';
 import '../providers/chord_prediction_provider.dart';
 import '../providers/music_notifier_provider.dart';
+import 'amplitude_graph_view.dart';
 import 'graph_view.dart';
 import 'prediction_grid_view.dart';
+import 'speed_controller_view.dart';
 
 class ChordPredictionView extends ConsumerWidget {
   const ChordPredictionView({super.key});
@@ -22,7 +24,7 @@ class ChordPredictionView extends ConsumerWidget {
     return ListView(
         shrinkWrap: true,
         padding: 10.allPad,
-        physics: Get.scrollPhysics,
+        physics: ClampingScrollPhysics(),
         children: [
           AudioPlayer(key: Get.key(audioFile)),
           chordPrediction.when(
@@ -34,8 +36,10 @@ class ChordPredictionView extends ConsumerWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GraphView(predictions),
+                    SizedBox(height: 120.ht, child: AmplitudeGraphView()),
                     5.verticalGap,
+                    GraphView(),
+                    SpeedControllerSlider(),
                     AppText("Chords"),
                     5.verticalGap,
                     PredictionGridView()

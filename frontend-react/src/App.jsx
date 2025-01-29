@@ -7,6 +7,7 @@ import FileUpload from "./components/FileUpload/FileUpload";
 import { FileProvider } from "./contexts/FileContext";
 import Homepage from "./components/Homepage/Homepage";
 
+
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 

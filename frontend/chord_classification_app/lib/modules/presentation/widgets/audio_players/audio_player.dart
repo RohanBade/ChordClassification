@@ -21,7 +21,7 @@ class AudioPlayer extends ConsumerWidget {
     final isPlaying = chordNotifier.isPlaying;
     return Column(
       mainAxisSize: MainAxisSize.min,
-      spacing: 5.ht,
+      spacing: 2.ht,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -31,24 +31,24 @@ class AudioPlayer extends ConsumerWidget {
                 color: Get.disabledColor),
             AudioFileWaveforms(
                 playerController: chordNotifier.playerController,
-                continuousWaveform: true,
                 playerWaveStyle: PlayerWaveStyle(
                     fixedWaveColor: AppColors.primary.o5,
                     seekLineColor: chordNotifier.color.o4,
                     waveCap: StrokeCap.round,
-                    spacing: 5.5.st,
-                    seekLineThickness: 20.st,
+                    spacing: 7.st,
+                    seekLineThickness: 15.st,
                     liveWaveColor: AppColors.blue),
-                size: Size(Get.width * 0.7, 50.ht)),
+                size: Size(Get.width * 0.65, 35.ht)),
             AppIcon(AppIcons.reload, onTap: () async {
               final file = await FileHandler.getMusicFile();
               ref.read(musicFileProvider.notifier).state = file;
               chordNotifier.updatePredictions([]);
               chordNotifier.updateChordValue('');
             }, color: Get.disabledColor),
+            AppIcon(Icons.mic, color: Get.disabledColor)
           ],
         ),
-        AppText(chordNotifier.chordValue),
+        AppText(chordNotifier.chordValue, style: Get.bodySmall),
         5.verticalGap,
       ],
     );

@@ -36,7 +36,7 @@ final class AppThemes {
       appBarTheme: AppBarTheme(
           elevation: 0,
           centerTitle: true,
-          toolbarHeight: 45.h,
+          toolbarHeight: 30.h,
           backgroundColor: AppColors.black,
           iconTheme: IconThemeData(size: 23.sp, color: AppColors.white),
           actionsIconTheme: IconThemeData(color: AppColors.white, size: 15.sp),
@@ -68,7 +68,7 @@ final class AppThemes {
                   WidgetStateColor.resolveWith((states) => AppColors.black))),
       appBarTheme: AppBarTheme(
           elevation: 0,
-          toolbarHeight: 45.h,
+          toolbarHeight: 25.h,
           centerTitle: true,
           titleTextStyle: TextThemes.primaryTextTheme.bodyMedium!.px18,
           backgroundColor: AppColors.white,

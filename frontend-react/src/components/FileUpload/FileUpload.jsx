@@ -3,9 +3,11 @@ import AxiosInstance from "../../services/AxiosInstance";
 import { FileContext } from "./../../contexts/FileContext";
 import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin from "wavesurfer.js/dist/plugins/regions.esm.js";
+import Play from "/assets/1.png";
+import Pause from "/assets/2.png";
 import "./FileUpload.css";
 
-const FileUpload = ({ onFileSelect, buttonLabel = "Upload Audio File" }) => {
+const FileUpload = ({ onFileSelect, buttonLabel = "Browse File" }) => {
   const inputFileRef = useRef(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
@@ -118,53 +120,47 @@ const FileUpload = ({ onFileSelect, buttonLabel = "Upload Audio File" }) => {
   }, [isPlaying]);
 
   return (
-    <div>
-      <button
-        onClick={() => inputFileRef.current.click()}
-        className="upload-button"
-      >
-        {buttonLabel}
-      </button>
-      <input
-        type="file"
-        accept="audio/wav"
-        ref={inputFileRef}
-        style={{ display: "none" }}
-        onChange={handleFileChange}
-      />
-
-      {uploading && <p>Uploading...</p>}
+    <div className="upload">
+      {uploading && <p style={{ color: "white" }}>Uploading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
+      {audioReady && (
+        <button onClick={togglePlayPause} className="play-pause">
+          <img
+            src={isPlaying ? Pause : Play}
+            alt={isPlaying ? "Pause" : "Play"}
+          />
+        </button>
+      )}
 
       {fileURL && (
         <div
           id="waveform"
           style={{
-            width: "100%",
-            height: "200px",
+            width: "90%",
             marginTop: "20px",
-            border: "1px solid #ccc",
+            color: "white",
           }}
         ></div>
       )}
 
-      {audioReady && (
+      <div className="upload-section">
+        <img src="/assets/upload.png" style={{ width: "100px" }} alt="" />
+        <p>Upload Audio Files Here</p>
         <button
-          onClick={togglePlayPause}
-          style={{
-            marginTop: "20px",
-            padding: "10px 20px",
-            backgroundColor: "#007bff",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            display: "flex",
-            justifyContent: "center",
-          }}
+          onClick={() => inputFileRef.current.click()}
+          className="upload-button"
         >
-          {isPlaying ? "Pause" : "Play"}
+          {buttonLabel}
         </button>
-      )}
+        <input
+          type="file"
+          accept="audio/wav"
+          ref={inputFileRef}
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
+        <p className="file-info">Supported File: WAV | Max file size: 40 MB</p>
+      </div>
     </div>
   );
 };

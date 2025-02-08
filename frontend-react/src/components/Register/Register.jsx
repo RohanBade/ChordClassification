@@ -20,10 +20,42 @@ const Register = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const validateForm = () => {
+    const { username, email, password } = formData;
+
+    if (!username.trim() || username.trim().length < 3) {
+      setError("Full Name must be at least 3 characters long.");
+      return false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim() || !emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return false;
+    }
+
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    if (!password.trim() || !passwordRegex.test(password)) {
+      setError(
+        "Password must be at least 8 characters long, include an uppercase letter, a number, and a special character."
+      );
+      return false;
+    }
+
+    setError("");
+    return true;
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+
+    if (!validateForm()) {
+      setLoading(false);
+      return;
+    }
 
     const { username, email, password } = formData;
 
@@ -45,9 +77,17 @@ const Register = () => {
         setFormData({ username: "", email: "", password: "" });
         navigate("/login");
       }
-    } catch (err) {
-      console.error("Registration failed:", err);
-      setError("An unexpected error occurred. Please try again.");
+    } catch (error) {
+      if (error.response) {
+        console.error("Error response:", error.response.data.detail);
+        setError(error.response.data.detail);
+      } else if (error.request) {
+        console.error("No response from server:", error.request);
+        setError("No response. Please try again later.");
+      } else {
+        console.error("Error:", error.message);
+        setError("An error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -110,8 +150,11 @@ const Register = () => {
         </div>
       </form>
       <div className="login-link">
-        <p>
-          Already have an account? <Link to="/login">Login</Link>
+        <p style={{ color: "gray" }}>
+          Already have an account?{" "}
+          <Link style={{ color: "skyblue" }} to="/login">
+            Login
+          </Link>
         </p>
       </div>
     </div>

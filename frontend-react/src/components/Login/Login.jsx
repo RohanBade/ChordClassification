@@ -16,6 +16,8 @@ const Login = ({ setIsAuthenticated }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const isFormValid = username.trim() !== "" && password.trim() !== "";
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -60,7 +62,7 @@ const Login = ({ setIsAuthenticated }) => {
   return (
     <div className="login-container">
       <div className="heading">
-        <h2>Sign In</h2>
+        <h2>Log in</h2>
         <p>Enter your credentials below to login</p>
       </div>
       <form onSubmit={handleLogin}>
@@ -93,7 +95,11 @@ const Login = ({ setIsAuthenticated }) => {
             <label htmlFor="show-password">Show Password</label>
           </div>
           {error && <p className="error">{error}</p>}
-          <button className="btn" type="submit" disabled={loading}>
+          <button
+            className="btn"
+            type="submit"
+            disabled={!isFormValid || loading}
+          >
             {loading ? "Logging in..." : "Sign in"}
           </button>
           <div className="divider">

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'dart:math';
 import 'extensions.dart';
 
 extension Double on double {
@@ -8,6 +8,13 @@ extension Double on double {
   Duration get minutes => _getDuration(this, feature: "min");
   Duration get seconds => _getDuration(this, feature: 'sec');
   Duration get milliSeconds => _getDuration(this, feature: 'ms');
+  double get roundOff3 => roundToSignificantFigures(this, 3);
+}
+
+double roundToSignificantFigures(double num, int n) {
+  if (num == 0) return 0.0;
+  final scale = pow(10, (n - 1 - (log(num.abs()) / ln10).floor()));
+  return (num * scale).roundToDouble() / scale;
 }
 
 extension SizeExtensionsD on double {

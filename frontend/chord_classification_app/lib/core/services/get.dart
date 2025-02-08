@@ -6,15 +6,20 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../abstractservices/platform_provider.dart';
 import '../../abstractservices/storage_services.dart';
+import '../../abstractservices/theme_notifier.dart';
+import '../../abstractservices/token_manager.dart';
 import '../configs/app_colors.dart';
 import '../utils/storage_key_constants.dart';
 import 'scaffold_messenger.dart/messenger.dart';
 import 'storageservices/hive_storage_service.dart';
+import 'storageservices/token_service.dart';
+import 'theme_handler/theme_notifier_impl.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 typedef Router = Future<Object?>;
 
 abstract final class Get {
+  Get._();
 //Application State
   static NavigatorState get _currentState => navigatorKey.currentState!;
   static BuildContext get context => _currentState.context;
@@ -59,8 +64,11 @@ abstract final class Get {
   static dynamic pop() => _currentState.pop();
 
 //Storage
-  static StorageServices get box =>
-      HiveStorageService(boxName: StorageKeys.boxName);
+  static StorageServices get box => HiveStorageService(StorageKeys.boxName);
+
+  static TokenManager get tokenManager => TokenServices();
+
+  static ThemeNotifier get themeNotifier => ThemeNotifierImpl();
 
 //Theme
   static ThemeData get _theme => Theme.of(context);

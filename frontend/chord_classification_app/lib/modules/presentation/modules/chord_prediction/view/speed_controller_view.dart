@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,11 +8,12 @@ import '../../../../injection_container.dart';
 import '../../../widgets/text/app_text.dart';
 
 class SpeedControllerSlider extends ConsumerWidget {
-  const SpeedControllerSlider({super.key});
+  const SpeedControllerSlider(this.file,{super.key});
 
+  final File file;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final musicNotifier = ref.watch(chordPredictionNotifier);
+    final musicNotifier = ref.watch(chordPredictionNotifier(file));
     final speedValue = musicNotifier.speed;
     return Row(
       mainAxisSize: MainAxisSize.min,

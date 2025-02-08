@@ -9,6 +9,7 @@ import '../../../widgets/buttons/text_buttons.dart';
 import '../../../widgets/text/app_text.dart';
 import '../../auth/view/login_page.dart';
 import '../providers/music_notifier_provider.dart';
+import '../widgets/save_button.dart';
 import 'chord_prediction_view.dart';
 import 'music_selection_view.dart';
 
@@ -17,7 +18,8 @@ class PredictionHomescreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isSelected = ref.watch(musicFileProvider) != null;
+    final musicFile = ref.watch(musicFileProvider);
+    final isSelected = musicFile != null;
     final hasLogin = ref.watch(tokenManagerProvider).token != null;
     return PlatformScaffold(
       appBar: PlatformAppBar(
@@ -25,6 +27,8 @@ class PredictionHomescreen extends ConsumerWidget {
         trailingActions: [
           if (!hasLogin)
             AppTextButton(text: "Login", onPressed: () => Get.to(LoginPage()))
+          else
+            SaveButton()
         ],
       ),
       body: AnimatedSwitcher(

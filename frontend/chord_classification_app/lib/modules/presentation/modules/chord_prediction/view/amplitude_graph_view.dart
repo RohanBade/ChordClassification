@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -7,11 +9,12 @@ import '../../../../../core/services/get.dart';
 import '../../../../injection_container.dart';
 
 class AmplitudeGraphView extends ConsumerWidget {
-  const AmplitudeGraphView({super.key});
+  const AmplitudeGraphView(this.file, {super.key});
+  final File file;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chordNotifier = ref.watch(chordPredictionNotifier);
+    final chordNotifier = ref.watch(chordPredictionNotifier(file));
     final amplitude = chordNotifier.amplitudesData;
     return SfCartesianChart(
       enableAxisAnimation: true,
@@ -26,7 +29,7 @@ class AmplitudeGraphView extends ConsumerWidget {
           rangePadding: ChartRangePadding.additionalStart,
           isVisible: true,
           maximum: (chordNotifier.amplitudes.max + 0.03),
-          minimum: 0,
+          minimum: -0.1,
           labelStyle: Get.bodySmall.px10,
           title: AxisTitle(text: 'Amplitude', textStyle: Get.bodySmall.px10),
           enableAutoIntervalOnZooming: true),

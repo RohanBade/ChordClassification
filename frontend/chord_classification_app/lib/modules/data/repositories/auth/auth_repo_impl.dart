@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
+import '../../../../abstractservices/token_manager.dart';
 import '../../../../core/services/get.dart';
-import '../../../../core/services/storageservices/token_manager.dart';
 import '../../../domain/repositories/auth/auth_repo.dart';
 import '../../datasource/Auth/auth_remote_data_source.dart';
 

@@ -4,6 +4,8 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/utils/app_icons.dart';
 import '../../../widgets/buttons/icon_buttons.dart';
 import '../../chord_prediction/view/prediction_homescreen.dart';
+import '../../saved_prediction/views/saved_prediction_init_view.dart';
+import '../../saved_prediction/widgets/saved_icon.dart';
 import 'settings.dart';
 
 class Homepage extends StatefulWidget {
@@ -14,7 +16,11 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  final screens = [PredictionHomescreen(), SettingsPage()];
+  final screens = [
+    PredictionHomescreen(),
+    SavedPredictionInitView(),
+    SettingsPage(),
+  ];
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -35,9 +41,10 @@ class _HomepageState extends State<Homepage> {
             elevation: 0),
         items: [
           BottomNavigationBarItem(
-              icon: AppIcon(AppIcons.home, size: 20.st), label: "Home"),
+              icon: AppIcon(AppIcons.home, size: 20), label: "Home"),
+          BottomNavigationBarItem(icon: SavedIcon(), label: "Saved"),
           BottomNavigationBarItem(
-              icon: AppIcon(AppIcons.setting, size: 20.st), label: "Settings")
+              icon: AppIcon(AppIcons.setting, size: 20), label: "Settings")
         ],
       ),
     );

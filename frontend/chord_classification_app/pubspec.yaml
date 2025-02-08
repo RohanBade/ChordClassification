@@ -21,6 +21,7 @@ dependencies:
   fluttertoast: ^8.2.8
   typewritertext: ^3.0.9
   loading_animation_widget: ^1.3.0
+  flutter_slidable: ^4.0.0
 
   #file
   file_picker: ^8.1.6
@@ -28,6 +29,8 @@ dependencies:
   #audio
   audio_waveforms: ^1.2.0
   ffmpeg_kit_flutter: ^6.0.3
+  audio_analyzer: ^0.1.0
+  
 
   #charts
   syncfusion_flutter_charts: ^28.1.33
@@ -36,6 +39,7 @@ dependencies:
   #storage
   hive_flutter: ^1.1.0
   path_provider: ^2.1.5
+  path: ^1.9.0
   
 
   #network

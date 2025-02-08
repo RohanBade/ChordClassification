@@ -24,11 +24,8 @@ class SplashScreen extends StatelessWidget {
               onFinished: (value) => Get.offAll(Homepage()),
               builder: (context, controller) {
                 return GradientText(
-                    gradient: const LinearGradient(colors: [
-                      Colors.teal,
-                      AppColors.primary,
-                      Colors.green,
-                    ]),
+                    gradient: const LinearGradient(
+                        colors: [AppColors.teal, AppColors.primary, AppColors.green]),
                     fontSize: 45,
                     text: controller.text);
               }),

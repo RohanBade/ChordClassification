@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../../../core/services/api_services/api_service.dart';
+import '../../../../abstractservices/api_manager.dart';
 import '../../../../core/utils/api_endpoints.dart';
 
 abstract class AuthRemoteDataSource {

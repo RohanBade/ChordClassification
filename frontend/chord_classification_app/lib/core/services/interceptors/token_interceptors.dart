@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../abstractservices/token_manager.dart';
 import '../../../modules/injection_container.dart';
-import '../storageservices/token_manager.dart';
 
 class TokenInterceptors extends Interceptor {
   TokenInterceptors(this._tokenManager);

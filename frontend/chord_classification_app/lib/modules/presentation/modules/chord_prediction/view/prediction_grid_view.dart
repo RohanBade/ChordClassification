@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -9,11 +11,12 @@ import '../../../../injection_container.dart';
 import '../../../widgets/text/app_text.dart';
 
 class PredictionGridView extends ConsumerWidget {
-  const PredictionGridView({super.key});
+  const PredictionGridView(this.file,{super.key});
 
+  final File file;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chordNotifier = ref.watch(chordPredictionNotifier);
+    final chordNotifier = ref.watch(chordPredictionNotifier(file));
     final predictions = chordNotifier.chordPredictions;
     return GridView.builder(
       gridDelegate:

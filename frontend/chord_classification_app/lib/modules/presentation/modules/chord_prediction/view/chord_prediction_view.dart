@@ -26,23 +26,24 @@ class ChordPredictionView extends ConsumerWidget {
         padding: 10.allPad,
         physics: ClampingScrollPhysics(),
         children: [
-          AudioPlayer(key: Get.key(audioFile)),
           chordPrediction.when(
               skipLoadingOnRefresh: false,
               error: (error, stackTrace) =>
-                  ErrorButton(provider: chordPredictionProvider(audioFile)),
+                  ErrorButton(provider: chordPredictionProvider),
               loading: () => Center(child: AppProgressIndicator()),
               data: (predictions) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 120.ht, child: AmplitudeGraphView()),
+                    AudioPlayer(audioFile, key: Get.key(audioFile)),
+                    SizedBox(
+                        height: 120.ht, child: AmplitudeGraphView(audioFile)),
                     5.verticalGap,
-                    GraphView(),
-                    SpeedControllerSlider(),
+                    GraphView(audioFile),
+                    SpeedControllerSlider(audioFile),
                     AppText("Chords"),
                     5.verticalGap,
-                    PredictionGridView()
+                    PredictionGridView(audioFile)
                   ],
                 );
               }),

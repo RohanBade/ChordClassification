@@ -6,7 +6,9 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import '../services/get.dart';
 
-abstract class AppIcons {
+abstract final class AppIcons {
+  AppIcons._();
+
   static const account = Icons.account_circle_outlined;
   static const email = Icons.email_outlined;
 
@@ -17,4 +19,8 @@ abstract class AppIcons {
 
   static const home = CupertinoIcons.home;
   static get setting => PlatformIcons(Get.context).settings;
+
+  static const save = CupertinoIcons.bookmark;
+
+  static get delete => PlatformIcons(Get.context).delete;
 }

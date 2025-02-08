@@ -21,7 +21,6 @@ class ChordPredictionRepoImpl implements ChordPredictionRepo {
       Get.snackbar(errorMessage);
       throw Exception(errorMessage);
     } catch (e) {
-      print("hello $e");
       rethrow;
     }
   }

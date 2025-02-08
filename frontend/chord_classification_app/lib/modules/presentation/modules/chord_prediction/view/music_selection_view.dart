@@ -3,9 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/services/file_handlers/file_handler.dart';
+import '../../../../../core/services/get.dart';
 import '../../../../../core/utils/assets_path.dart';
 import '../../../widgets/buttons/app_buttons.dart';
-import '../providers/music_notifier_provider.dart';
+import '../../audio_cropper/views/audio_cropper.dart';
 
 class MusicSelectionView extends ConsumerWidget {
   const MusicSelectionView({super.key});
@@ -18,12 +19,29 @@ class MusicSelectionView extends ConsumerWidget {
         spacing: 20.ht,
         children: [
           Image.asset(Assets.images.loadingImage),
-          AppButton(
-              onTap: () async {
-                final file = await FileHandler.getMusicFile();
-                ref.read(musicFileProvider.notifier).state = file;
-              },
-              text: "Pick Music")
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              AppButton(
+                  onTap: () async {
+                    final file = await FileHandler.getMusicFile();
+                    if (file != null) {
+                      Get.to(AudioCropper(file));
+                    }
+                    // ref.read(musicFileProvider.notifier).state = file;
+                  },
+                  text: "Pick Music"),
+              AppButton(
+                  onTap: () async {
+                    final file = await FileHandler.getVideoFile();
+                    if (file != null) {
+                      Get.to(AudioCropper(file));
+                    }
+                    // ref.read(musicFileProvider.notifier).state = file;
+                  },
+                  text: "Pick Video")
+            ],
+          ),
         ],
       ),
     );

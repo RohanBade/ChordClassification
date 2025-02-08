@@ -1,10 +1,10 @@
 import '../../../domain/entities/chord_prediction/chord_prediction.dart';
 
 class ChordPredictionModel extends ChordPrediction {
- ChordPredictionModel({
+  ChordPredictionModel({
     required super.start,
     required super.end,
-    required super.chord,
+    required super.chord
   });
 
   factory ChordPredictionModel.fromJson(Map<String, dynamic> json) {
@@ -12,5 +12,13 @@ class ChordPredictionModel extends ChordPrediction {
         start: json['start'] as int,
         end: json['end'] as int,
         chord: json['chord'] as String);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'start': start,
+      'end': end,
+      'chord': chord
+    };
   }
 }

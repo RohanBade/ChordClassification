@@ -1,4 +1,4 @@
-abstract class StorageServices {
+abstract class StorageServices<T> {
   Future<StorageServices> init();
 
   /// Removes item from storage by a key

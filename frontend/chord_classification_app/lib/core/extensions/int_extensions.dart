@@ -11,6 +11,32 @@ extension Intx on int {
   Duration get microSeconds => Duration(microseconds: this);
 }
 
+extension TimeX on int {
+  String get timeFormat => _formatTime(this);
+  String get timeFormatHrs => _formatTimeHrs(this);
+}
+
+String _formatTimeHrs(int milliseconds) {
+  int totalSeconds = milliseconds ~/ 1000;
+  int hours = totalSeconds ~/ 3600;
+  int minutes = (totalSeconds % 3600) ~/ 60;
+  int seconds = totalSeconds % 60;
+  return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+}
+
+String _formatTime(int milliseconds) {
+  int totalSeconds = milliseconds ~/ 1000;
+  int hours = totalSeconds ~/ 3600;
+  int minutes = (totalSeconds % 3600) ~/ 60;
+  int seconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+  } else {
+    return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+  }
+}
+
 extension SizeExtensions on int {
   SizedBox get verticalGap {
     final height = this;

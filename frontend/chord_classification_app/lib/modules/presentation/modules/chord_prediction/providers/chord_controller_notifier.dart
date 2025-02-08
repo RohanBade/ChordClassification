@@ -2,16 +2,19 @@ import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_core/core.dart';
 
 import '../../../../../core/configs/app_colors.dart';
 import '../../../../../core/constants/chord_map.dart';
 import '../../../../domain/entities/chord_prediction/chord_prediction.dart';
+import '../../../../injection_container.dart';
 import '../view/amplitude_graph_view.dart';
 
 class ChordControllerNotifier extends ChangeNotifier {
   List<ChordPrediction> chordPredictions = [];
   List<AmplitudeGraphData> amplitudesData = [];
+
   String chordValue = '';
   PlayerController playerController = PlayerController();
   RangeController rangeController = RangeController(start: 0, end: 6);
@@ -19,12 +22,16 @@ class ChordControllerNotifier extends ChangeNotifier {
   Color color = AppColors.primary;
   bool isPlaying = false;
   int currentIndex = 0;
+  double currentTime = 0;
 
   double speed = 1.0;
 
   int? stopTime;
 
-  ChordControllerNotifier(File file) {
+  final Ref ref;
+  final File file;
+
+  ChordControllerNotifier(this.file, this.ref) {
     playerController.preparePlayer(path: file.path);
     playerController.setFinishMode(finishMode: FinishMode.pause);
     playerController.onCompletion.listen((_) {
@@ -34,6 +41,9 @@ class ChordControllerNotifier extends ChangeNotifier {
     });
     playerController.setRate(speed);
     playerController.onCurrentDurationChanged.listen((sec) {
+      if (amplitudesData.isEmpty) {
+        updateAmplitudeData();
+      }
       updateChord(sec);
     });
   }
@@ -47,7 +57,7 @@ class ChordControllerNotifier extends ChangeNotifier {
     amplitudeController.dispose();
   }
 
-  List<double> get amplitudes => playerController.waveformData;
+  List<double> amplitudes = [];
   double get duration => playerController.maxDuration / 1000;
 
   double get timePerSample => duration / amplitudes.length;
@@ -55,22 +65,18 @@ class ChordControllerNotifier extends ChangeNotifier {
   ChordPrediction get currentChord => chordPredictions[currentIndex];
 
   updateChord(int currentDuration) {
-    final graphStart = currentDuration / 1000;
-    rangeController.start = graphStart;
-    rangeController.end = graphStart + 6;
-    amplitudeController.start = graphStart;
+    currentTime = currentDuration / 1000;
+    rangeController.start = currentTime;
+    rangeController.end = currentTime + 6;
+    amplitudeController.start = currentTime;
     amplitudeController.end =
-        graphStart + (currentChord.end - currentChord.start);
+        currentTime + (currentChord.end - currentChord.start);
     if (stopTime != null && currentDuration >= stopTime! * 1000) {
       updateIsPlaying();
       stopTime = null;
     }
     final playingIndex = chordPredictions.indexWhere((c) =>
         currentDuration >= c.start * 1000 && currentDuration < c.end * 1000);
-    if (playingIndex == currentIndex) {
-      notifyListeners();
-      return;
-    }
     currentIndex = playingIndex;
     final prediction = chordPredictions[currentIndex];
     updateChordValue(
@@ -87,8 +93,13 @@ class ChordControllerNotifier extends ChangeNotifier {
 
   updatePredictions(List<ChordPrediction> predictions) {
     chordPredictions = [...predictions];
-    updateAmplitudeData();
     color = chordToColor[predictions.first.chord] ?? AppColors.titleColor;
+    notifyListeners();
+  }
+
+  updateAmplitude(List<double> amplitudes) {
+    this.amplitudes = amplitudes;
+    updateAmplitudeData();
     notifyListeners();
   }
 
@@ -139,5 +150,11 @@ class ChordControllerNotifier extends ChangeNotifier {
     stopTime = chordPredictions[currentIndex].end;
     seekTo(start);
     updateIsPlaying();
+  }
+
+  saveOutputData() {
+    ref
+        .read(savedClassificationProvider)
+        .storeChord(file, chordPredictions, amplitudes);
   }
 }

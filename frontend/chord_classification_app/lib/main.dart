@@ -2,8 +2,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'abstractservices/platform_provider.dart';
 import 'core/configs/app_theme.dart';
-import 'core/services/storageservices/token_manager.dart';
-import 'core/services/theme_handler/theme_notifier.dart';
 import 'modules/injection_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +18,11 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+
   final box = await Get.box.init();
-  final tokenManager = await TokenManager(box).init();
-  final themeNotifier = await ThemeNotifier(box).init();
+  final tokenManager = await Get.tokenManager.init(box);
+  final themeNotifier = await Get.themeNotifier.init(box);
+
   await dotenv.load(fileName: '.env');
   runApp(ProviderScope(overrides: [
     storageServiceProvider.overrideWith((ref) => box),

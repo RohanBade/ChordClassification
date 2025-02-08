@@ -5,4 +5,6 @@ final class StorageKeys {
   static const token = "Chord_Token";
 
   static const themeIndex = "themeIndex";
+
+  static const storedChords = "OURStored_Chords";
 }

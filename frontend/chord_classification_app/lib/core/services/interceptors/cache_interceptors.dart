@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../storageservices/response_cache.dart';
+import '../../../abstractservices/response_cache_service.dart';
+import '../../../modules/injection_container.dart';
 
 class CacheResolver extends Interceptor {
   CacheResolver(this._cache);

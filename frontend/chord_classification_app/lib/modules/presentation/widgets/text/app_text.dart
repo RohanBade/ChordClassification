@@ -36,7 +36,7 @@ class AppText extends StatelessWidget {
       maxLines: maxLines,
       overflow: overflow,
       textDirection: textDirection,
-      minFontSize: 14,
+      minFontSize: 5,
       locale: Localizations.localeOf(context),
     );
   }

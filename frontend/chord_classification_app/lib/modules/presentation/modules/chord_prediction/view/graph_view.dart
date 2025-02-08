@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -9,21 +11,21 @@ import '../../../../domain/entities/chord_prediction/chord_prediction.dart';
 import '../../../../injection_container.dart';
 
 class GraphView extends ConsumerWidget {
-  const GraphView({super.key});
+  const GraphView(this.file, {super.key});
 
+  final File file;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chordNotifier = ref.watch(chordPredictionNotifier);
+    final chordNotifier = ref.watch(chordPredictionNotifier(file));
     final rangeController = chordNotifier.rangeController;
     final predictions = chordNotifier.chordPredictions;
     return SfCartesianChart(
-      key: Get.key(predictions),
+      key: Get.key(file),
       enableAxisAnimation: true,
       selectionType: SelectionType.point,
       primaryXAxis: CategoryAxis(
-        title: AxisTitle(text: 'Chords', textStyle: Get.bodySmall.px11),
-        labelStyle: Get.bodySmall.px10,
-      ),
+          title: AxisTitle(text: 'Chords', textStyle: Get.bodySmall.px11),
+          labelStyle: Get.bodySmall.px10),
       primaryYAxis: NumericAxis(
           rangeController: rangeController,
           minimum: 0,

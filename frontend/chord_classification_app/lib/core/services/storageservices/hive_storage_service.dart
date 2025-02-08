@@ -2,10 +2,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../abstractservices/storage_services.dart';
 
-//Centralization of all the Hive related Stuff
-
 class HiveStorageService implements StorageServices {
-  HiveStorageService({required this.boxName});
+  HiveStorageService(this.boxName);
   late Box<dynamic> hiveBox;
   final String boxName;
 

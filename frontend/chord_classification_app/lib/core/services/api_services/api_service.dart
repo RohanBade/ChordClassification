@@ -1,30 +1,27 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../abstractservices/api_manager.dart';
 import '../../../modules/injection_container.dart';
 import '../../extensions/extensions.dart';
 import '../interceptors/cache_interceptors.dart';
 import '../interceptors/token_interceptors.dart';
 
-typedef QueryType = Map<String, dynamic>;
-
-class ApiManager {
+class ApiManagerImpl implements ApiManager {
   final _connectTimeout = 10.seconds;
   final _receiveTimeout = 10.seconds;
   final _sendTimeout = 10.seconds;
 
   late Dio dio;
 
-  ApiManager(Ref ref) {
-    QueryType headers = {};
+  ApiManagerImpl(Ref ref) {
     BaseOptions options = BaseOptions(
         baseUrl: ref.read(baseUrlProvider),
         connectTimeout: _connectTimeout,
         receiveTimeout: _receiveTimeout,
         sendTimeout: _sendTimeout,
         responseType: ResponseType.json,
-        contentType: Headers.jsonContentType,
-        headers: headers);
+        contentType: Headers.jsonContentType);
 
     dio = Dio(options);
 
@@ -32,31 +29,33 @@ class ApiManager {
     dio.interceptors.add(ref.read(cacheResolverProvider));
   }
 
-  Future<Response> get(String path,
-      {Options? options, QueryType? queryParameters}) async {
+  @override
+  Future<Response> get(path, {headers, queryParameters}) async {
     return await dio.get(path,
-        queryParameters: queryParameters, options: options);
+        queryParameters: queryParameters, options: Options(headers: headers));
   }
 
-  Future<Response> post(String path, {Options? options, data}) async {
-    return await dio.post(path, data: data, options: options);
+  @override
+  Future<Response> post(path, {headers, data}) async {
+    return await dio.post(path, data: data, options: Options(headers: headers));
   }
 
-  Future<Response> patch(String path, {data, Options? options}) {
-    return dio.patch(path, data: data, options: options);
+  @override
+  Future<Response> patch(path, {data, headers}) {
+    return dio.patch(path, data: data, options: Options(headers: headers));
   }
 
-  Future<Response> delete(String path,
-      {data, QueryType? queryParameters, Options? options}) {
+  @override
+  Future<Response> delete(path, {data, queryParameters, headers}) {
     return dio.delete(path,
-        data: data, queryParameters: queryParameters, options: options);
+        data: data,
+        queryParameters: queryParameters,
+        options: Options(headers: headers));
   }
 
-  Future<Response> fileUpload(String path, {FormData? data}) async {
-    return await post(
-      path,
-      options: Options(headers: {'enctype': 'multipart/form-data'}),
-      data: data,
-    );
+  @override
+  Future<Response> fileUpload(path, {data}) async {
+    return await post(path,
+        headers: {'enctype': 'multipart/form-data'}, data: data);
   }
 }

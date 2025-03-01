@@ -150,6 +150,7 @@ class AudioCropperNotifier extends ChangeNotifier {
   }
 
   void onHorizontalDragUpdateButtom(DragUpdateDetails details) {
+    _getWidth();
     trimmerPosition += details.primaryDelta ?? 0;
 
     if (trimmerPosition < _startPosition) {
@@ -174,7 +175,13 @@ class AudioCropperNotifier extends ChangeNotifier {
   }
 
   Future<File?> trim() async {
-    return await AdvanceAudioHandler.cropMusic(file, startTime, endTime);
+    final trimFile =
+        await AdvanceAudioHandler.cropMusic(file, startTime, endTime);
+    if (trimFile != null) {
+      updateIsPlaying();
+      return trimFile;
+    }
+    return null;
   }
 
   Future<bool> confirm() async {

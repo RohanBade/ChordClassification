@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-abstract class ApiManager {
+abstract class ApiManager<T> {
   ApiManager._();
   Future<Response> get(String path,
       {Map<String, dynamic>? headers, Map<String, dynamic>? queryParameters});

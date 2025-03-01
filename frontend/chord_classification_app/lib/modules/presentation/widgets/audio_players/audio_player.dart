@@ -11,6 +11,7 @@ import '../../../../core/services/get.dart';
 import '../../../../core/utils/app_icons.dart';
 import '../../../injection_container.dart';
 import '../../modules/audio_cropper/views/audio_cropper.dart';
+import '../../modules/chord_prediction/providers/music_notifier_provider.dart';
 import '../buttons/icon_buttons.dart';
 import '../text/app_text.dart';
 
@@ -48,7 +49,8 @@ class AudioPlayer extends ConsumerWidget {
               AppIcon(AppIcons.reload, onTap: () async {
                 final file = await FileHandler.getMusicFile();
                 if (file != null) {
-                  Get.to(AudioCropper(file));
+                  ref.read(trimMusicFileProvider.notifier).state = file;
+                  Get.to(AudioCropper());
                 }
               }, color: Get.disabledColor),
           ],

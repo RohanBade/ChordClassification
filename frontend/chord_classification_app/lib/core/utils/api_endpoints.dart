@@ -1,4 +1,4 @@
-final class ApiEndpoints {
+abstract final class ApiEndpoints {
   ApiEndpoints._();
 
   static const login = '/login';

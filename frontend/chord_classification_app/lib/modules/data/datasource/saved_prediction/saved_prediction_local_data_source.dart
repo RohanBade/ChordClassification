@@ -13,8 +13,7 @@ abstract class SavedPredictionLocalDataSrc {
   Future<List<LocalChord>> fetchChords();
 }
 
-class SavedPredictionLocalDataSrcImpl
-    implements SavedPredictionLocalDataSrc {
+class SavedPredictionLocalDataSrcImpl implements SavedPredictionLocalDataSrc {
   SavedPredictionLocalDataSrcImpl(this.storageServices);
 
   final StorageServices storageServices;
@@ -24,7 +23,7 @@ class SavedPredictionLocalDataSrcImpl
     List<LocalChord> chords = [];
     final storedData = await storageServices.get(StorageKeys.storedChords);
     if (storedData == null) {
-      return [];
+      return chords;
     }
     final tempDir = await getTemporaryDirectory();
     for (var i in jsonDecode(storedData)) {

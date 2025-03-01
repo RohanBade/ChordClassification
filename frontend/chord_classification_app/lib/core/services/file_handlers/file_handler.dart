@@ -2,14 +2,11 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'audio_handler.dart';
 
-final class FileHandler {
+abstract final class FileHandler {
   FileHandler._();
 
   static Future<File?> getMusicFile() async {
-    final file = await FilePicker.platform.pickFiles(
-        allowCompression: true,
-        type: FileType.custom,
-        allowedExtensions: ['wav']);
+    final file = await FilePicker.platform.pickFiles(allowCompression: true);
     if (file != null) {
       return AdvanceAudioHandler.convertToWav(File(file.files.single.path!));
     }

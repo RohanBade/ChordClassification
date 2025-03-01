@@ -5,18 +5,14 @@ import '../../../abstractservices/token_manager.dart';
 import '../../../modules/injection_container.dart';
 
 class TokenInterceptors extends Interceptor {
-  TokenInterceptors(this._tokenManager);
+  TokenInterceptors(this.tokenManager);
 
-  final TokenManager _tokenManager;
-
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) =>
-      handler.next(response);
+  final TokenManager tokenManager;
 
   @override
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final accessToken = _tokenManager.token;
+    final accessToken = tokenManager.token;
 
     if (accessToken != null) {
       options.headers['Authorization'] = 'Bearer $accessToken';

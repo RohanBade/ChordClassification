@@ -2,13 +2,12 @@ import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_core/core.dart';
 
 import '../../../../../core/configs/app_colors.dart';
 import '../../../../../core/constants/chord_map.dart';
 import '../../../../domain/entities/chord_prediction/chord_prediction.dart';
-import '../../../../injection_container.dart';
+import '../../saved_prediction/providers/saved_classification_providers.dart';
 import '../view/amplitude_graph_view.dart';
 
 class ChordControllerNotifier extends ChangeNotifier {
@@ -28,10 +27,10 @@ class ChordControllerNotifier extends ChangeNotifier {
 
   int? stopTime;
 
-  final Ref ref;
   final File file;
+  final SavedClassification savedClassification;
 
-  ChordControllerNotifier(this.file, this.ref) {
+  ChordControllerNotifier(this.file, this.savedClassification) {
     playerController.preparePlayer(path: file.path);
     playerController.setFinishMode(finishMode: FinishMode.pause);
     playerController.onCompletion.listen((_) {
@@ -153,8 +152,6 @@ class ChordControllerNotifier extends ChangeNotifier {
   }
 
   saveOutputData() {
-    ref
-        .read(savedClassificationProvider)
-        .storeChord(file, chordPredictions, amplitudes);
+    savedClassification.storeChord(file, chordPredictions, amplitudes);
   }
 }

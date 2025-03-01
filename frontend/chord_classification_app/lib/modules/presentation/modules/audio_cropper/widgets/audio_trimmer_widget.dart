@@ -105,7 +105,7 @@ class AudioCropperView extends ConsumerWidget {
               ),
             ),
           ],
-        )
+        ),
       ],
     );
   }

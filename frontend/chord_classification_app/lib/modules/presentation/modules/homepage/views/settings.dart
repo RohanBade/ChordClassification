@@ -69,7 +69,6 @@ class SettingsPage extends StatelessWidget {
               final hasLogin = ref.watch(tokenManagerProvider).token != null;
               return AppButton(
                   onTap: () {
-                    ref.invalidate(chordPredictionNotifier);
                     ref.invalidate(musicFileProvider);
                     if (hasLogin) {
                       ref.read(tokenManagerProvider).updateToken(null);

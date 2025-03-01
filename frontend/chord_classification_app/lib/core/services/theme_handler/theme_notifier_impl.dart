@@ -5,7 +5,7 @@ import '../../../abstractservices/theme_notifier.dart';
 import '../../utils/storage_key_constants.dart';
 
 class ThemeNotifierImpl extends ThemeNotifier {
-  late StorageServices _storageServices;
+  late StorageServices storageServices;
 
   bool _isDarkTheme = false;
 
@@ -14,8 +14,8 @@ class ThemeNotifierImpl extends ThemeNotifier {
 
   @override
   Future<ThemeNotifier> init(box) async {
-    _storageServices = box;
-    final index = await _storageServices.get(StorageKeys.themeIndex) ?? 0;
+    storageServices = box;
+    final index = await storageServices.get(StorageKeys.themeIndex) ?? 0;
     _isDarkTheme = index == 1;
     return this;
   }
@@ -26,7 +26,7 @@ class ThemeNotifierImpl extends ThemeNotifier {
   @override
   void toggleTheme() {
     _isDarkTheme = !_isDarkTheme;
-    _storageServices.set(StorageKeys.themeIndex, _isDarkTheme ? 1 : 0);
+    storageServices.set(StorageKeys.themeIndex, _isDarkTheme ? 1 : 0);
     notifyListeners();
   }
 }

@@ -1,6 +1,6 @@
 //Centralization of Assets
 
-class _AssetsImagesGen {
+final class _AssetsImagesGen {
   const _AssetsImagesGen();
   static const _imagePath = "${Assets._basePath}/images";
 
@@ -8,11 +8,11 @@ class _AssetsImagesGen {
   String get loadingImage => "$_imagePath/loading.gif";
 }
 
-class _AssetsSvgIconGen {
+final class _AssetsSvgIconGen {
   const _AssetsSvgIconGen();
 }
 
-class Assets {
+abstract final class Assets {
   Assets._();
   static const _basePath = "assets";
 

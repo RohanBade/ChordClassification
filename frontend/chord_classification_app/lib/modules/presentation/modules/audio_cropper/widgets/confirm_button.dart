@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,8 +8,8 @@ import '../dependency_injection/audio_injection.dart';
 import 'audio_trimmer_widget.dart';
 
 class ConfirmButton extends ConsumerWidget {
-  const ConfirmButton(this.file, {super.key});
-  final File file;
+  const ConfirmButton({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final trimmedFile = ref.watch(croppedFileProvider);

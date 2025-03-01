@@ -61,9 +61,8 @@ final chordPredictionRemoteDataSourceProvider =
 final chordPredictionRepoProvider = Provider<ChordPredictionRepo>((ref) =>
     ChordPredictionRepoImpl(ref.read(chordPredictionRemoteDataSourceProvider)));
 
-final chordPredictionNotifier =
-    ChangeNotifierProviderFamily<ChordControllerNotifier, File>(
-        (ref, file) => ChordControllerNotifier(file, ref));
+final chordPredictionNotifier = ChangeNotifierProviderFamily((ref, File file) =>
+    ChordControllerNotifier(file, ref.read(savedClassificationProvider)));
 
 //SavedLocalValues
 final savedLocalDataSrc = Provider<SavedPredictionLocalDataSrc>(

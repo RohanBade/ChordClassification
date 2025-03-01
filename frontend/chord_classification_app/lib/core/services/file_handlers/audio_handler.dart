@@ -8,7 +8,7 @@ import '../get.dart';
 abstract final class AdvanceAudioHandler {
   AdvanceAudioHandler._();
 
-  static Future<Directory> get directory async => await getTemporaryDirectory();
+  static Future<Directory> get _directory async => await getTemporaryDirectory();
 
   static Future<File?> convertToWav(File file) async {
     final filePath = file.path;
@@ -42,7 +42,7 @@ abstract final class AdvanceAudioHandler {
   static Future<File?> cropMusic(File file, int startTime, int endTime) async {
     final inputPath = file.path;
     final duration = ((endTime - startTime) / 1000 + 1).ceil();
-    final dir = await directory;
+    final dir = await _directory;
     final outputPath =
         "${dir.path}/${DateTime.now().millisecond}trimmedAudio.wav";
 
@@ -69,7 +69,7 @@ abstract final class AdvanceAudioHandler {
       command += '-i ${file.path} ';
       fileCommand += "[$i:a]";
     }
-    final dir = await directory;
+    final dir = await _directory;
     final outputPath =
         "${dir.path}/${DateTime.now().millisecond}mergedAudio.wav";
     command +=

@@ -2,6 +2,7 @@ import mimetypes
 import os
 import pickle
 
+import numpy as np
 import pandas as pd
 from fastapi import Depends, FastAPI, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,7 +32,9 @@ app.include_router(user_router)
 app.include_router(auth_router)
 
 
-svm_model_path = os.path.join(os.path.dirname(__file__), "saved_models", "model.pkl")
+svm_model_path = os.path.join(
+    os.path.dirname(__file__), "saved_models", "seq_new_model.pkl"
+)
 
 
 @app.post("/upload/", tags=["uploads"])
@@ -66,7 +69,32 @@ async def create_upload_file(
             "A#",
             "B",
         ]
-        chords = ["A", "Am", "Bm", "C", "D", "Dm", "E", "Em", "F", "G"]
+        chords = [
+            "A",
+            "Am",
+            "Bm",
+            "C",
+            "D",
+            "Dm",
+            "E",
+            "Em",
+            "F",
+            "G",
+            "B",
+            "A#",
+            "A#m",
+            "Gm",
+            "G#m",
+            "G#",
+            "Fm",
+            "F#m",
+            "F#",
+            "F#m",
+            "D#",
+            "Cm",
+            "C#m",
+            "C#",
+        ]
 
         temp_file_path = f"temp_{file.filename}"
         with open(temp_file_path, "wb") as temp_file:
@@ -81,9 +109,9 @@ async def create_upload_file(
             model = pickle.load(f)
         results = []
         for i, profile in enumerate(pcp_profiles):
-            profile_df = pd.DataFrame([profile], columns=pitch_classes)
+            profile_df = np.array(profile).reshape(1, -1)
             prediction = model.predict(profile_df)
-            index = int(prediction[0])
+            index = prediction.item()
             predicted_chord = chords[index]
             results.append({"timestamp": timestamps[i], "chord": predicted_chord})
 

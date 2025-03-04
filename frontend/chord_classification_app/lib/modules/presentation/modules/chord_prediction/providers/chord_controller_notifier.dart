@@ -50,13 +50,18 @@ class ChordControllerNotifier extends ChangeNotifier {
   @override
   void dispose() {
     super.dispose();
+    playerController.pausePlayer();
     playerController.removeListener(() {});
     playerController.dispose();
     rangeController.dispose();
     amplitudeController.dispose();
   }
 
-  List<double> amplitudes = [];
+  List<double> get amplitudes => _amplitudes ?? playerController.waveformData;
+  List<double>? _amplitudes;
+  List<double> get waveformAmplitudes => playerController.waveformData.isEmpty
+      ? amplitudes
+      : playerController.waveformData;
   double get duration => playerController.maxDuration / 1000;
 
   double get timePerSample => duration / amplitudes.length;
@@ -97,7 +102,7 @@ class ChordControllerNotifier extends ChangeNotifier {
   }
 
   updateAmplitude(List<double> amplitudes) {
-    this.amplitudes = amplitudes;
+    _amplitudes = amplitudes;
     updateAmplitudeData();
     notifyListeners();
   }
@@ -131,6 +136,16 @@ class ChordControllerNotifier extends ChangeNotifier {
       return;
     }
     playerController.seekTo((start * 1000).toInt());
+  }
+
+  updatePlay(bool isPlaying) {
+    this.isPlaying = isPlaying;
+    if (isPlaying) {
+      playerController.startPlayer();
+    } else {
+      playerController.pausePlayer();
+    }
+    notifyListeners();
   }
 
   updateIsPlaying() {

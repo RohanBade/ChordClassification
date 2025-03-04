@@ -8,7 +8,8 @@ import '../get.dart';
 abstract final class AdvanceAudioHandler {
   AdvanceAudioHandler._();
 
-  static Future<Directory> get _directory async => await getTemporaryDirectory();
+  static Future<Directory> get _directory async =>
+      await getTemporaryDirectory();
 
   static Future<File?> convertToWav(File file) async {
     final filePath = file.path;
@@ -58,9 +59,9 @@ abstract final class AdvanceAudioHandler {
   }
 
   static Future<File?> mergeMusic(List<File> files) async {
-    if (files.length == 1) {
-      return files[0];
-    }
+    // if (files.length == 1) {
+    //   return files[0];
+    // }
     String command = '';
     String fileCommand = '';
 

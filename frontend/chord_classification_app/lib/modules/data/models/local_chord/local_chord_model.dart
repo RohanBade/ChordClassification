@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../../../domain/entities/local_chord_model/local_chord_prediction.dart';
 import '../chord_prediction/chord_data_model.dart';
 
@@ -18,7 +16,7 @@ class LocalChordModel extends LocalChord {
       'fileName': fileName,
       'predictions': predictionJson,
       'fileBytes': fileBytes,
-      'amplitudes': jsonEncode(amplitudes)
+      'amplitudes': amplitudes
     };
   }
 
@@ -29,7 +27,7 @@ class LocalChordModel extends LocalChord {
     return LocalChordModel(
         fileName: json['fileName'],
         fileBytes: json['fileBytes'],
-        amplitudes: List<double>.from(jsonDecode(json['amplitudes'])),
+        amplitudes: List<double>.from(json['amplitudes']),
         predictions: predictions);
   }
 }

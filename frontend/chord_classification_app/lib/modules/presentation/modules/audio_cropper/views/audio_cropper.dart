@@ -11,6 +11,7 @@ import '../../chord_prediction/providers/music_notifier_provider.dart';
 import '../dependency_injection/audio_injection.dart';
 import '../widgets/audio_trimmer_widget.dart';
 import '../widgets/confirm_button.dart';
+import '../widgets/continue_without_trimming.dart';
 import '../widgets/picker_dialog.dart';
 import 'audio_cropper_list.dart';
 
@@ -30,32 +31,38 @@ class AudioCropper extends ConsumerWidget {
               if (ref.watch(croppedFileProvider) == null) {
                 final cropperNotifier =
                     ref.watch(cropperNotifierProvider(file));
-                return Padding(
-                  padding: 10.allPad,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                          width: 130.wt,
-                          child: AppButton(
-                              onTap: () async {
-                                showMusicPickerDialog();
-                              },
-                              buttonColor: AppColors.titleColor,
-                              text: "Pick Music")),
-                      SizedBox(
-                        width: 130.wt,
-                        child: AppButton(
-                            onTap: () async {
-                              final croppedFile = await cropperNotifier.trim();
-                              ref.read(croppedFileProvider.notifier).state =
-                                  croppedFile;
-                            },
-                            buttonColor: Colors.teal,
-                            text: "Trim"),
-                      ),
-                    ],
-                  ),
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                        padding: 10.allPad,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              SizedBox(
+                                  width: 130.wt,
+                                  child: AppButton(
+                                      onTap: () async {
+                                        showMusicPickerDialog();
+                                      },
+                                      buttonColor: AppColors.titleColor,
+                                      text: "Pick Music")),
+                              SizedBox(
+                                  width: 130.wt,
+                                  child: AppButton(
+                                      onTap: () async {
+                                        final croppedFile =
+                                            await cropperNotifier.trim();
+                                        ref
+                                            .read(croppedFileProvider.notifier)
+                                            .state = croppedFile;
+                                      },
+                                      buttonColor: Colors.teal,
+                                      text: "Trim"))
+                            ])),
+                    ContinueWithoutTrimming()
+                  ],
                 );
               }
               return ConfirmButton();

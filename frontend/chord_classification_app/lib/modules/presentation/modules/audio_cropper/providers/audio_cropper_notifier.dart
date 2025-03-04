@@ -46,6 +46,8 @@ class AudioCropperNotifier extends ChangeNotifier {
 
   List<File> files = [];
 
+  bool get continueWithoutTrimming => files.isEmpty && duration < 40000;
+
   AudioCropperNotifier(this.file, this.audioListNotifier) {
     preparePlayer();
   }
@@ -163,6 +165,16 @@ class AudioCropperNotifier extends ChangeNotifier {
     updateTime();
   }
 
+  updatePlay(bool isPlaying) {
+    this.isPlaying = isPlaying;
+    if (isPlaying) {
+      playerController.startPlayer();
+    } else {
+      playerController.pausePlayer();
+    }
+    notifyListeners();
+  }
+
   _getWidth() {
     final renderBox =
         widgetKey.currentContext?.findRenderObject() as RenderBox?;
@@ -175,10 +187,10 @@ class AudioCropperNotifier extends ChangeNotifier {
   }
 
   Future<File?> trim() async {
+    updatePlay(false);
     final trimFile =
         await AdvanceAudioHandler.cropMusic(file, startTime, endTime);
     if (trimFile != null) {
-      updateIsPlaying();
       return trimFile;
     }
     return null;

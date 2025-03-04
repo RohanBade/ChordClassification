@@ -37,6 +37,7 @@ class AudioPlayer extends ConsumerWidget {
                 color: Get.disabledColor),
             AudioFileWaveforms(
                 playerController: chordNotifier.playerController,
+                waveformData: chordNotifier.waveformAmplitudes,
                 playerWaveStyle: PlayerWaveStyle(
                     fixedWaveColor: AppColors.primary.o5,
                     seekLineColor: chordNotifier.color.o4,
@@ -47,6 +48,7 @@ class AudioPlayer extends ConsumerWidget {
                 size: Size(Get.width * 0.65, 35.ht)),
             if (!isCache)
               AppIcon(AppIcons.reload, onTap: () async {
+                chordNotifier.updatePlay(false);
                 final file = await FileHandler.getMusicFile();
                 if (file != null) {
                   ref.read(trimMusicFileProvider.notifier).state = file;

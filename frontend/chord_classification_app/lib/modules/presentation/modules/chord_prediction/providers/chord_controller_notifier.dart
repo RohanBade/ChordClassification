@@ -26,12 +26,17 @@ class ChordControllerNotifier extends ChangeNotifier {
   double speed = 1.0;
 
   int? stopTime;
+  bool amplitudeUpdated = false;
 
   final File file;
   final SavedClassification savedClassification;
 
   ChordControllerNotifier(this.file, this.savedClassification) {
-    playerController.preparePlayer(path: file.path);
+    preparePlayer();
+  }
+
+  preparePlayer() async {
+    await playerController.preparePlayer(path: file.path);
     playerController.setFinishMode(finishMode: FinishMode.pause);
     playerController.onCompletion.listen((_) {
       playerController.seekTo(0);
@@ -108,10 +113,17 @@ class ChordControllerNotifier extends ChangeNotifier {
   }
 
   updateAmplitudeData() {
+    if (duration < 0) {
+      return;
+    }
+    if (duration > 0 && amplitudeUpdated) {
+      return;
+    }
     for (var i = 0; i < amplitudes.length; i++) {
       amplitudesData.add(AmplitudeGraphData(
           amplitude: amplitudes[i], duration: i * timePerSample));
     }
+    amplitudeUpdated = true;
     notifyListeners();
   }
 

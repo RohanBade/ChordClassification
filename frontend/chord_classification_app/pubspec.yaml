@@ -24,7 +24,8 @@ dependencies:
   flutter_slidable: ^4.0.0
 
   #file
-  file_picker: ^8.1.6
+  file_picker: ^9.0.2
+  image_picker: ^1.1.2
 
   #audio
   audio_waveforms: ^1.2.0

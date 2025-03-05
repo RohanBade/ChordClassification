@@ -58,7 +58,7 @@ abstract final class AdvanceAudioHandler {
     return null;
   }
 
-  static Future<File?> mergeMusic(List<File> files) async {
+  static Future<File?> mergeMusic(List<File> files, String name) async {
     // if (files.length == 1) {
     //   return files[0];
     // }
@@ -71,8 +71,7 @@ abstract final class AdvanceAudioHandler {
       fileCommand += "[$i:a]";
     }
     final dir = await _directory;
-    final outputPath =
-        "${dir.path}/${DateTime.now().millisecond}mergedAudio.wav";
+    final outputPath = "${dir.path}/$name.wav";
     command +=
         ' -filter_complex "${fileCommand}concat=n=${files.length}:v=0:a=1" $outputPath';
     final session = await FFmpegKit.execute(command);

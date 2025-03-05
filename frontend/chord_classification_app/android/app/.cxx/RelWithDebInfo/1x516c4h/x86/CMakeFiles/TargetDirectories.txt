@@ -1,2 +1,0 @@
-C:/Users/USER/Desktop/major_project/ChordClassification/frontend/chord_classification_app/android/app/.cxx/RelWithDebInfo/1x516c4h/x86/CMakeFiles/edit_cache.dir
-C:/Users/USER/Desktop/major_project/ChordClassification/frontend/chord_classification_app/android/app/.cxx/RelWithDebInfo/1x516c4h/x86/CMakeFiles/rebuild_cache.dir

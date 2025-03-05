@@ -21,7 +21,10 @@ class SavedListTile extends ConsumerWidget {
     final chordNotifier = ref.watch(chordPredictionNotifier(chord.file!));
     final duration = (chordNotifier.currentTime).roundOff3;
     return ListTile(
-      onTap: () => Get.to(SavedPredictionScreen(chord.file!)),
+      onTap: () {
+        chordNotifier.updateAmplitudeData();
+        Get.to(SavedPredictionScreen(chord.file!));
+      },
       title: AppText(chord.fileName, fontSize: 14),
       subtitle: AppText(
           "\t\t$duration : ${chordNotifier.duration.roundOff3} sec",

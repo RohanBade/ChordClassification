@@ -19,6 +19,14 @@ class SavedClassification extends ChangeNotifier {
   List<LocalChord> chords = [];
   List<Map<String, dynamic>> chordJson = [];
 
+  @override
+  void dispose() {
+    for (var chord in chords) {
+      chord.file?.deleteSync();
+    }
+    super.dispose();
+  }
+
   void initRef(Ref ref, List<LocalChord> chords) {
     this.chords = chords;
     for (var i in chords) {

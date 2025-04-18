@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -9,6 +8,7 @@ import '../../../../../core/extensions/extensions.dart';
 import '../../../../../core/services/get.dart';
 import '../../../../domain/entities/chord_prediction/chord_prediction.dart';
 import '../../../../injection_container.dart';
+import '../../../widgets/text/app_text.dart';
 
 class GraphView extends ConsumerWidget {
   const GraphView(this.file, {super.key});
@@ -24,8 +24,8 @@ class GraphView extends ConsumerWidget {
       enableAxisAnimation: true,
       selectionType: SelectionType.point,
       primaryXAxis: CategoryAxis(
-          title: AxisTitle(text: 'Chords', textStyle: Get.bodySmall.px11),
-          labelStyle: Get.bodySmall.px10),
+          title: AxisTitle(text: 'Chords', textStyle: Get.bodySmall.px10),
+          labelStyle: Get.bodySmall.px11),
       primaryYAxis: NumericAxis(
           rangeController: rangeController,
           minimum: 0,
@@ -49,20 +49,23 @@ class GraphView extends ConsumerWidget {
           enableDoubleTapZooming: false),
       series: [
         RangeColumnSeries<ChordPrediction, String>(
-          dataSource: predictions,
-          xValueMapper: (ChordPrediction data, _) => data.chord,
-          lowValueMapper: (datum, index) => datum.start,
-          highValueMapper: (datum, index) => datum.end,
-          onPointTap: (pointInteractionDetails) => chordNotifier
-              .updateFromGraph(pointInteractionDetails.pointIndex ?? 0),
-          enableTrackball: true,
-          pointColorMapper: (datum, index) =>
-              chordToColor[datum.chord] ?? AppColors.titleColor,
-          dataLabelSettings: DataLabelSettings(
-              isVisible: true,
-              textStyle: Get.bodySmall.px10,
-              margin: EdgeInsets.zero),
-        ),
+            dataSource: predictions,
+            xValueMapper: (ChordPrediction data, _) => data.chord,
+            lowValueMapper: (datum, index) => datum.start,
+            highValueMapper: (datum, index) => datum.end,
+            onPointTap: (pointInteractionDetails) => chordNotifier
+                .updateFromGraph(pointInteractionDetails.pointIndex ?? 0),
+            pointColorMapper: (datum, index) =>
+                chordToColor[datum.chord] ?? AppColors.titleColor,
+            dataLabelSettings: DataLabelSettings(
+                isVisible: true,
+                labelAlignment: ChartDataLabelAlignment.auto,
+                builder: (data, point, series, pointIndex, seriesIndex) {
+                  final chordPrediction = data as ChordPrediction;
+                  return AppText(chordPrediction.chord, fontSize: 14);
+                },
+                textStyle: Get.bodySmall.px10,
+                margin: EdgeInsets.zero))
       ],
     );
   }
